@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+ <meta charset="UTF-8">
+ <title>{% block title %}Sistema Django{% endblock %}</title>
+</head>
+<body>
+ <header>
+ <h1>Sistema da Aula de Django</h1>
+ <nav>
+ <a href="/">Início</a> |
+ <a href="/sobre/">Sobre</a> |
+ <a href="/despesas/">Despesas</a> |
+ {% if user.is_authenticated %}
+    <form action="/logout/" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+    </form>
+{% else %}
+    <a href="/login/">Entrar</a>
+{% endif %}
+ </nav>
+ <hr>
+ </header>
+ <main>
+ {% block content %}
+ {% endblock %}
+ </main>
+ <footer>
+ <hr>
+ </footer>
+</body>
+</html>
