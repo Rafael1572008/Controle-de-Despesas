@@ -1,15 +1,30 @@
 {% extends 'core/base.html' %}
 {% block title %}Lista de Despesas{% endblock %}
+
 {% block content %}
- <h2>Despesas cadastradas</h2>
- <p><a href="/despesas/novo/">Cadastrar nova depesa</a></p>
- <ul>
- {% for despesa in despesas %}
- <li>
- <a href="/despesas/{{ despesa.id }}/">{{ despesa.nome }}</a>
- | <a href="/despesas/editar/{{ despesa.id }}/">Editar</a>
- | <a href="/despesas/excluir/{{ despesa.id }}/">Excluir</a>
- </li>
- {% endfor %}
- </ul>
+<h2>Despesas cadastradas</h2>
+
+<p><a href="/despesas/novo/">Cadastrar nova despesa</a></p>
+
+<ul>
+{% for despesa in despesas %}
+    <li>
+        <a href="/despesas/{{ despesa.id }}/">
+            {{ despesa.nome }}
+        </a>
+
+        | <a href="/despesas/editar/{{ despesa.id }}/">Editar</a>
+
+        | <form action="{% url 'excluir_despesa' despesa.id %}"
+                method="post"
+                style="display:inline;">
+            {% csrf_token %}
+            <button type="submit"
+                    onclick="return confirm('Deseja realmente excluir esta despesa?')">
+                Excluir
+            </button>
+        </form>
+    </li>
+{% endfor %}
+</ul>
 {% endblock %}

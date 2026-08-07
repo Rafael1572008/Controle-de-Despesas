@@ -15,6 +15,16 @@ def lista_despesas(request):
     despesas = Despesa.objects.all()
     return render(request, 'core/lista_despesas.html', {'despesas': despesas})
 
+def excluir_despesa(request, id):
+    despesa = get_object_or_404(Despesa, id=id)
+    
+    if request.method == 'POST':
+        despesa.delete()
+        return redirect('lista_despesas')
+    
+    return redirect('lista_despesas')
+
+
 @login_required   
 def criar_despesa(request):
     if request.method == 'POST':
