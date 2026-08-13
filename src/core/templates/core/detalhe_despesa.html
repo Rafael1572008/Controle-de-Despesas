@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block title %}Detalhes da Despesa{% endblock %}
+{% block content %}
+ <h2>{{ despesa.titulo }}</h2>
+ <p><strong>Descricao:</strong> {{ despesa.descricao }}</p>
+ <p><strong>Valor:</strong> {{ despesa.valor }}</p>
+ <p><strong>Categoria:</strong> {{ despesa.categoria }}</p>
+ <p><strong>Data da Despesa:</strong> {{ despesa.data_da_despesa }}</p>
+{% endblock %}
