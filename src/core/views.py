@@ -1,9 +1,12 @@
-from django.shortcuts import render 
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Despesa
 from .forms import DespesaForm
 from django.contrib.auth.decorators import login_required
+
+# Models
+from .models import Usuario
 
 def inicio(request):
     return render(request, 'core/inicio.html')  
@@ -38,6 +41,12 @@ def criar_despesa(request):
         form = DespesaForm()
 
     return render(request, 'core/form_despesa.html', {'form': form})
+def lista_Usuarios(request):
+    Usuarios = Usuario.objects.all()
+    return render(request, 'core/lista_Usuarios.html', {'Usuarios': Usuarios})
+
+
+
 # Create your views here.
 
 @login_required
