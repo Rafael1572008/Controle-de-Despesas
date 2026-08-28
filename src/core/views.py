@@ -14,12 +14,21 @@ def inicio(request):
 def sobre(request):
     return HttpResponse("Esta página foi criada para apresentar o sistema.")
 
+@login_required
 def lista_despesas(request):
-    despesas = Despesa.objects.all()
-    return render(request, 'core/lista_despesas.html', {'despesas': despesas})
+    despesas = Despesa.objects.filter(usuario=request.user)
+    return render(
+        request,
+        'core/lista_despesas.html',
+        {'despesas': despesas}
+    )
 
 def excluir_despesa(request, id):
-    despesa = get_object_or_404(Despesa, id=id)
+    get_object_or_404(
+        Despesa,
+        id=id,
+        usuario=request.user
+    )
     
     if request.method == 'POST':
         despesa.delete()
@@ -34,7 +43,9 @@ def criar_despesa(request):
         form = DespesaForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            despesa = form.save(commit=False)
+            despesa.usuario = request.user
+            despesa.save()
             return redirect('lista_despesas')
 
     else:
@@ -51,12 +62,20 @@ def lista_Usuarios(request):
 
 @login_required
 def detalhe_despesa(request, id):
-    despesa = get_object_or_404(Despesa, id=id)
+    get_object_or_404(
+        Despesa,
+        id=id,
+        usuario=request.user
+    )
     return render(request, 'core/detalhe_despesa.html', {'despesa': despesa})
 
 @login_required
 def editar_despesa(request, id):
-    despesa = get_object_or_404(Despesa, id=id)
+    get_object_or_404(
+        Despesa,
+        id=id,
+        usuario=request.user
+    )
 
     if request.method == 'POST':
         form = DespesaForm(request.POST, instance=despesa)
