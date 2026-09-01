@@ -1,30 +1,63 @@
 {% extends 'core/base.html' %}
-{% block title %}Lista de Despesas{% endblock %}
+
+{% block title %}Minhas Despesas{% endblock %}
 
 {% block content %}
-<h2>Despesas cadastradas</h2>
 
-<p><a href="/despesas/novo/">Cadastrar nova despesa</a></p>
+<h2>Minhas Despesas</h2>
+
+<p>
+    <a href="{% url 'criar_despesa' %}">
+        Cadastrar nova despesa
+    </a>
+</p>
 
 <ul>
+
 {% for despesa in despesas %}
+
     <li>
-        <a href="/despesas/{{ despesa.id }}/">
+
+        <a href="{% url 'detalhe_despesa' despesa.id %}">
             {{ despesa.nome }}
         </a>
 
-        | <a href="/despesas/editar/{{ despesa.id }}/">Editar</a>
+        - R$ {{ despesa.valor }}
 
-        | <form action="{% url 'excluir_despesa' despesa.id %}"
-                method="post"
-                style="display:inline;">
+        - {{ despesa.top.nome }}
+
+        | <a href="{% url 'editar_despesa' despesa.id %}">
+            Editar
+        </a>
+
+        |
+
+        <form
+            action="{% url 'excluir_despesa' despesa.id %}"
+            method="post"
+            style="display:inline;"
+        >
             {% csrf_token %}
-            <button type="submit"
-                    onclick="return confirm('Deseja realmente excluir esta despesa?')">
+
+            <button
+                type="submit"
+                onclick="return confirm('Deseja realmente excluir esta despesa?')"
+            >
                 Excluir
             </button>
+
         </form>
+
     </li>
+
+{% empty %}
+
+    <li>
+        Nenhuma despesa cadastrada.
+    </li>
+
 {% endfor %}
+
 </ul>
+
 {% endblock %}
