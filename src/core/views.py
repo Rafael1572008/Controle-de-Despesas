@@ -13,11 +13,12 @@ def sobre(request):
 
 @login_required
 def lista_despesas(request):
-    despesas = Despesa.objects.filter(usuario=request.user)
+    despesas = Despesa.objects.filter(usuario=request.user).select_related('top')
+    tops = Top.objects.filter(usuario=request.user).order_by('nome')
     return render(
         request,
         'core/lista_despesas.html',
-        {'despesas': despesas}
+        {'despesas': despesas, 'tops': tops}
     )
 
 @login_required

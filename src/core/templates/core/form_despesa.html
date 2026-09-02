@@ -1,10 +1,32 @@
 {% extends 'core/base.html' %}
-{% block title %}Formulário de Despesa{% endblock %}
+{% block title %}{{ form.instance.pk|yesno:"Editar despesa,Nova despesa" }}{% endblock %}
 {% block content %}
- <h2>Formulário de Despesa</h2>
- <form method="post">
- {% csrf_token %}
- {{ form.as_p }}
- <button type="submit">Salvar</button>
- </form>
+<div class="page-heading">
+    <p class="eyebrow">Financeiro</p>
+    <h1 class="page-title">{% if form.instance.pk %}Editar despesa{% else %}Nova despesa{% endif %}</h1>
+    <p class="page-subtitle">Preencha os dados do lançamento abaixo.</p>
+</div>
+
+<section class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="non-field-errors">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="form-grid">
+                {% for field in form %}
+                    <div class="field {% if field.name == 'descricao' %}field--full{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<span class="helptext">{{ field.help_text }}</span>{% endif %}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="form-actions">
+                <a class="button button--secondary" href="{% url 'lista_despesas' %}">Cancelar</a>
+                <button class="button" type="submit">Salvar despesa</button>
+            </div>
+        </form>
+    </div>
+</section>
 {% endblock %}

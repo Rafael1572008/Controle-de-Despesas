@@ -1,63 +1,74 @@
 {% extends 'core/base.html' %}
-
 {% block title %}Minhas Despesas{% endblock %}
-
 {% block content %}
+<div class="page-heading">
+    <p class="eyebrow">Financeiro</p>
+    <h1 class="page-title">Minhas Despesas</h1>
+    <p class="page-subtitle">Consulte e gerencie os lançamentos cadastrados.</p>
+</div>
 
-<h2>Minhas Despesas</h2>
+<section class="card" aria-labelledby="despesas-title">
+    <header class="card-header">
+        <div class="toolbar">
+            <div>
+                <h2 class="toolbar-title" id="despesas-title">Lançamentos</h2>
+                <p class="toolbar-subtitle">Suas despesas organizadas por categoria.</p>
+            </div>
+            <a class="button button--icon" href="{% url 'criar_despesa' %}" aria-label="Cadastrar nova despesa" title="Cadastrar nova despesa">+</a>
+        </div>
+    </header>
 
-<p>
-    <a href="{% url 'criar_despesa' %}">
-        Cadastrar nova despesa
-    </a>
-</p>
-
-<ul>
-
-{% for despesa in despesas %}
-
-    <li>
-
-        <a href="{% url 'detalhe_despesa' despesa.id %}">
-            {{ despesa.nome }}
-        </a>
-
-        - R$ {{ despesa.valor }}
-
-        - {{ despesa.top.nome }}
-
-        | <a href="{% url 'editar_despesa' despesa.id %}">
-            Editar
-        </a>
-
-        |
-
-        <form
-            action="{% url 'excluir_despesa' despesa.id %}"
-            method="post"
-            style="display:inline;"
-        >
-            {% csrf_token %}
-
-            <button
-                type="submit"
-                onclick="return confirm('Deseja realmente excluir esta despesa?')"
-            >
-                Excluir
-            </button>
-
-        </form>
-
-    </li>
-
-{% empty %}
-
-    <li>
-        Nenhuma despesa cadastrada.
-    </li>
-
-{% endfor %}
-
-</ul>
-
+    {% if despesas %}
+        <div class="datatable-shell">
+            <div class="datatable-toolbar" aria-label="Filtros da tabela">
+                <label class="sr-only" for="despesas-top-filter">Filtrar por Top</label>
+                <select class="datatable-filter" id="despesas-top-filter" data-table-filter="despesas-table" data-column="2">
+                    <option value="">Todas as Tops</option>
+                    {% for top in tops %}
+                        <option value="{{ top.nome }}">{{ top.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="data-table-wrap">
+            <table class="data-table js-datatable" id="despesas-table" data-date-column="1">
+                <thead>
+                    <tr>
+                        <th>Despesa</th>
+                        <th>Valor</th>
+                        <th>Top</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for despesa in despesas %}
+                    <tr>
+                        <td>
+                            <a class="item-title" href="{% url 'detalhe_despesa' despesa.id %}">{{ despesa.nome }}</a>
+                            {% if despesa.descricao %}<span class="item-meta">{{ despesa.descricao }}</span>{% endif %}
+                        </td>
+                        <td data-order="{{ despesa.data_da_despesa|date:'Y-m-d' }}"><span class="item-title">R$ {{ despesa.valor|floatformat:2 }}</span><span class="item-meta">{{ despesa.data_da_despesa|date:"d/m/Y" }}</span></td>
+                        <td><span class="badge">{{ despesa.top.nome }}</span></td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="action-link" href="{% url 'editar_despesa' despesa.id %}">Editar</a>
+                                <form action="{% url 'excluir_despesa' despesa.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button class="action-button action-button--danger" type="submit" onclick="return confirm('Deseja realmente excluir esta despesa?')">Excluir</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">+</div>
+            <p class="empty-title">Nenhuma despesa cadastrada</p>
+            <p class="empty-text">Comece adicionando seu primeiro lançamento.</p>
+        </div>
+    {% endif %}
+</section>
 {% endblock %}

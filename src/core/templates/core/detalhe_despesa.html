@@ -1,24 +1,40 @@
 {% extends 'core/base.html' %}
-{% block title %}Detalhes da Despesa{% endblock %}
+{% block title %}{{ despesa.nome }}{% endblock %}
 {% block content %}
-<h2>{{ despesa.nome }}</h2>
-<p><strong>Descricao:</strong> {{ despesa.descricao }}</p>
-<p><strong>Valor:</strong> {{ despesa.valor }}</p>
+<div class="page-heading">
+    <p class="eyebrow">Despesa</p>
+    <h1 class="page-title">{{ despesa.nome }}</h1>
+    <p class="page-subtitle">Detalhes do lançamento selecionado.</p>
+</div>
 
-<p>
-    <strong>Top:</strong>
-    {{ despesa.top.nome }}
-</p>
-
-<p>
-    <strong>É débito:</strong>
-
-    {% if despesa.top.eh_debito %}
-    Sim
-    {% else %}
-    Não
-    {% endif %}
-</p>
-
-<p><strong>Data da Despesa:</strong> {{ despesa.data_da_despesa }}</p>
+<section class="card">
+    <div class="card-body">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <span class="detail-label">Descrição</span>
+                <span class="detail-value detail-description">{{ despesa.descricao|default:"Sem descrição" }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Valor</span>
+                <span class="detail-value">R$ {{ despesa.valor }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Top</span>
+                <span class="detail-value">{{ despesa.top.nome }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Tipo da Top</span>
+                {% if despesa.top.eh_debito %}<span class="badge">Débito</span>{% else %}<span class="badge badge--neutral">Não é débito</span>{% endif %}
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Data da despesa</span>
+                <span class="detail-value">{{ despesa.data_da_despesa|date:"d/m/Y" }}</span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <a class="button button--secondary" href="{% url 'lista_despesas' %}">Voltar</a>
+            <a class="button" href="{% url 'editar_despesa' despesa.id %}">Editar despesa</a>
+        </div>
+    </div>
+</section>
 {% endblock %}

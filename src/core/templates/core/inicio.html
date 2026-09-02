@@ -1,11 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Página Inicial</title>
-</head>
-<body>
-    <h1>Bem-vindo ao Django</h1>
-    <p>Esta é a primeira página HTML do projeto.</p>
-</body>
-</html>
+{% extends 'core/base.html' %}
+{% block title %}Início{% endblock %}
+{% block content %}
+<section class="hero-card card">
+    <div class="hero-mark">✓</div>
+    <p class="eyebrow">Controle financeiro</p>
+    <h1>Organize suas despesas com mais clareza.</h1>
+    <p>Cadastre suas despesas, categorize cada lançamento com uma Top e acompanhe tudo em uma interface simples e objetiva.</p>
+    <div class="hero-actions">
+        {% if user.is_authenticated %}
+            <a class="button" href="{% url 'lista_despesas' %}">Ver minhas despesas</a>
+            <a class="button button--secondary" href="{% url 'lista_tops' %}">Gerenciar Tops</a>
+        {% else %}
+            <a class="button" href="{% url 'login' %}">Entrar no sistema</a>
+            <a class="button button--secondary" href="{% url 'cadastrar_usuario' %}">Criar conta</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
