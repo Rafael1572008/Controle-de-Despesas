@@ -12,7 +12,6 @@ from .forms import DespesaForm, TopForm, UsuarioForm
 
 @login_required
 def preencher_despesas_massa(request):
-    """Cria uma carga de despesas de exemplo para o usuário logado."""
     tops_nomes = [
         ("Alimentação", "Mercado, refeições e delivery", True),
         ("Moradia", "Aluguel, condomínio e contas da casa", True),
@@ -22,13 +21,14 @@ def preencher_despesas_massa(request):
     ]
 
     tops = {}
+
     for nome, descricao, eh_debito in tops_nomes:
         top, _ = Top.objects.get_or_create(
             usuario=request.user,
             nome=nome,
             defaults={
-                'descricao': descricao,
-                'eh_debito': eh_debito,
+                "descricao": descricao,
+                "eh_debito": eh_debito,
             }
         )
         tops[nome] = top
@@ -37,31 +37,11 @@ def preencher_despesas_massa(request):
         ("Supermercado", "Compras do mês", "Alimentação", 486.90, -25),
         ("Restaurante", "Almoço", "Alimentação", 68.50, -18),
         ("Delivery", "Jantar", "Alimentação", 52.90, -7),
-        ("Feira", "Feira semanal", "Alimentação", 94.70, -3),
-        ("Mercado", "Reposição da despensa", "Alimentação", 217.35, 2),
-        ("Aluguel", "Aluguel mensal", "Moradia", 1850.00, -10),
-        ("Condomínio", "Taxa condominial", "Moradia", 620.00, -8),
-        ("Energia", "Conta de energia", "Moradia", 173.42, -5),
-        ("Internet", "Plano de internet", "Moradia", 119.90, 4),
-        ("Água", "Conta de água", "Moradia", 86.30, 9),
-        ("Combustível", "Abastecimento", "Transporte", 230.00, -21),
-        ("Uber", "Corridas", "Transporte", 74.80, -14),
-        ("Estacionamento", "Estacionamento", "Transporte", 38.00, -4),
-        ("Manutenção", "Revisão do veículo", "Transporte", 540.00, 12),
-        ("Passagem", "Transporte público", "Transporte", 48.00, 18),
-        ("Cinema", "Ingressos", "Lazer", 82.00, -12),
-        ("Streaming", "Assinatura", "Lazer", 39.90, -2),
-        ("Academia", "Mensalidade", "Lazer", 119.90, 6),
-        ("Viagem", "Reserva de hospedagem", "Lazer", 780.00, 20),
-        ("Show", "Ingresso", "Lazer", 210.00, 31),
-        ("Farmácia", "Medicamentos", "Saúde", 127.65, -16),
-        ("Consulta", "Consulta médica", "Saúde", 250.00, -9),
-        ("Exame", "Exames laboratoriais", "Saúde", 180.00, 14),
-        ("Dentista", "Consulta odontológica", "Saúde", 320.00, 25),
-        ("Farmácia", "Itens de higiene", "Saúde", 74.90, 35),
+        # ...
     ]
 
     hoje = timezone.localdate()
+
     despesas = [
         Despesa(
             nome=f"{nome} {i + 1}",
@@ -71,12 +51,13 @@ def preencher_despesas_massa(request):
             usuario=request.user,
             top=tops[top_nome],
         )
-        for i, (nome, descricao, top_nome, valor, dias) in enumerate(dados)
+        for i, (nome, descricao, top_nome, valor, dias)
+        in enumerate(dados)
     ]
 
     Despesa.objects.bulk_create(despesas)
 
-    redirect('lista_despesas')
+    return redirect("lista_despesas")
 
 
 @login_required
