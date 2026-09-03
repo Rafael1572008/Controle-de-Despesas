@@ -335,7 +335,6 @@
                         <button class="nav-button" type="submit">Sair</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'sobre' %}">Sobre</a>
                     <a href="{% url 'login' %}">Entrar</a>
                     <a href="{% url 'cadastrar_usuario' %}">Cadastro</a>
                 {% endif %}
@@ -347,7 +346,6 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="app-footer">Sistema de Despesas</footer>
 </div>
     <script src="https://cdn.datatables.net/3.0.2/js/dataTables.min.js"></script>
     <script>

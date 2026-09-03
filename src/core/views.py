@@ -8,9 +8,6 @@ from .forms import DespesaForm, TopForm, UsuarioForm
 def inicio(request):
     return render(request, 'core/inicio.html')  
 
-def sobre(request):
-    return HttpResponse("Esta página foi criada para apresentar o sistema.")
-
 @login_required
 def lista_despesas(request):
     despesas = Despesa.objects.filter(usuario=request.user).select_related('top')
