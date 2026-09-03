@@ -3,7 +3,6 @@ from .views import * # Puxar tudo de views
 
 urlpatterns = [
     path('', inicio, name='inicio'),
-    path('sobre/', sobre, name='sobre'),
 
     # Despesas
     path('despesas/', lista_despesas, name='lista_despesas'),
