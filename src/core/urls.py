@@ -3,7 +3,6 @@ from .views import * # Puxar tudo de views
 
 urlpatterns = [
     path('', lista_despesas, name='home'),
-    path('sobre/', sobre, name='sobre'),
     path('dashboard/', dashboard, name='dashboard'),
     path('despesas/preencher-massa/', preencher_despesas_massa, name='preencher_despesas_massa'),
 

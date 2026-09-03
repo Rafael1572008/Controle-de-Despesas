@@ -38,7 +38,10 @@ class TopForm(forms.ModelForm):
             'descricao',
             'eh_debito',
         ]
-
+        labels = {
+            'descricao': 'Descrição',
+            'eh_debito': 'É débito',
+        }
 
 class UsuarioForm(UserCreationForm):
 
