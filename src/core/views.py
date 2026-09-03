@@ -62,35 +62,87 @@ def preencher_despesas_massa(request):
 
 @login_required
 def dashboard(request):
-    despesas = Despesa.objects.filter(usuario=request.user).select_related('top')
+    despesas = (
+        Despesa.objects
+        .filter(usuario=request.user)
+        .select_related('top')
+    )
+
     hoje = timezone.localdate()
 
-    total_geral = sum((d.valor for d in despesas), 0)
-    baixadas = [d for d in despesas if d.data_da_despesa <= hoje]
-    agendadas = [d for d in despesas if d.data_da_despesa > hoje]
-    total_baixado = sum((d.valor for d in baixadas), 0)
-    total_agendado = sum((d.valor for d in agendadas), 0)
+    def valor_com_sinal(despesa):
+        if despesa.top.eh_debito:
+            return -despesa.valor
+        return despesa.valor
+
+    total_geral = sum(
+        (valor_com_sinal(d) for d in despesas),
+        Decimal('0')
+    )
+
+    baixadas = [
+        d for d in despesas
+        if d.data_da_despesa <= hoje
+    ]
+
+    agendadas = [
+        d for d in despesas
+        if d.data_da_despesa > hoje
+    ]
+
+    total_baixado = sum(
+        (valor_com_sinal(d) for d in baixadas),
+        Decimal('0')
+    )
+
+    total_agendado = sum(
+        (valor_com_sinal(d) for d in agendadas),
+        Decimal('0')
+    )
 
     por_top = {}
+
     for despesa in despesas:
         nome = despesa.top.nome
-        if nome not in por_top:
-            por_top[nome] = {'nome': nome, 'total': 0, 'baixado': 0, 'agendado': 0}
-        por_top[nome]['total'] += despesa.valor
-        if despesa.data_da_despesa <= hoje:
-            por_top[nome]['baixado'] += despesa.valor
-        else:
-            por_top[nome]['agendado'] += despesa.valor
+        valor = valor_com_sinal(despesa)
 
-    top_resumo = sorted(por_top.values(), key=lambda item: item['total'], reverse=True)
+        if nome not in por_top:
+            por_top[nome] = {
+                'nome': nome,
+                'total': Decimal('0'),
+                'baixado': Decimal('0'),
+                'agendado': Decimal('0'),
+            }
+
+        por_top[nome]['total'] += valor
+
+        if despesa.data_da_despesa <= hoje:
+            por_top[nome]['baixado'] += valor
+        else:
+            por_top[nome]['agendado'] += valor
+
+    top_resumo = sorted(
+        por_top.values(),
+        key=lambda item: item['total'],
+        reverse=True
+    )
 
     return render(request, 'core/dashboard.html', {
         'total_geral': total_geral,
         'total_baixado': total_baixado,
         'total_agendado': total_agendado,
-        'chart_status': [float(total_baixado), float(total_agendado)],
-        'top_labels': [item['nome'] for item in top_resumo],
-        'top_values': [float(item['total']) for item in top_resumo],
+        'chart_status': [
+            float(total_baixado),
+            float(total_agendado)
+        ],
+        'top_labels': [
+            item['nome']
+            for item in top_resumo
+        ],
+        'top_values': [
+            float(item['total'])
+            for item in top_resumo
+        ],
         'top_resumo': top_resumo,
     })
 

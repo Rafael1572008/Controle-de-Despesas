@@ -8,7 +8,7 @@
 {% block content %}
 <div class="page-heading">
     <p class="eyebrow">Financeiro</p>
-    <h1 class="page-title">Minhas Despesas</h1>
+    <h1 class="page-title">Portal de Despesas</h1>
     <p class="page-subtitle">Consulte e gerencie os lançamentos cadastrados.</p>
 </div>
 
@@ -18,24 +18,9 @@
             <div class="toolbar-heading">
                 <div>
                     <h2 class="toolbar-title" id="despesas-title">Lançamentos</h2>
-                    <p class="toolbar-subtitle">Suas despesas organizadas por categoria.</p>
+                    <p class="toolbar-subtitle"></p>
                 </div>
             </div>
-            {% if despesas %}
-                <div class="date-filter-compact" aria-label="Filtro por período de data">
-                    <label class="date-compact-field" title="Data inicial">
-                        <span>De</span>
-                        <input type="date" id="date-filter-start" aria-label="Data inicial">
-                    </label>
-                    <span class="date-compact-separator" aria-hidden="true">—</span>
-                    <label class="date-compact-field" title="Data final">
-                        <span>Até</span>
-                        <input type="date" id="date-filter-end" aria-label="Data final">
-                    </label>
-                    <button type="button" class="date-compact-clear" id="clear-date-filter" aria-label="Limpar filtro de data" title="Limpar filtro de data" hidden>×</button>
-                </div>
-            {% endif %}
-            <button></button>
             <a class="button button--icon" href="{% url 'criar_despesa' %}" aria-label="Cadastrar nova despesa" title="Cadastrar nova despesa">+</a>
         </div>
     </header>
