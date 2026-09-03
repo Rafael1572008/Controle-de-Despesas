@@ -113,9 +113,6 @@ def dashboard(request):
         'top_resumo': top_resumo,
     })
 
-def sobre(request):
-    return HttpResponse("Esta página foi criada para apresentar o sistema.")
-
 @login_required
 def lista_despesas(request):
     despesas = Despesa.objects.filter(usuario=request.user).select_related('top')
