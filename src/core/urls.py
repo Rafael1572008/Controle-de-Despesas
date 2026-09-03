@@ -2,8 +2,10 @@ from django.urls import path
 from .views import * # Puxar tudo de views
 
 urlpatterns = [
-    path('', inicio, name='inicio'),
+    path('', lista_despesas, name='home'),
     path('sobre/', sobre, name='sobre'),
+    path('dashboard/', dashboard, name='dashboard'),
+    path('despesas/preencher-massa/', preencher_despesas_massa, name='preencher_despesas_massa'),
 
     # Despesas
     path('despesas/', lista_despesas, name='lista_despesas'),

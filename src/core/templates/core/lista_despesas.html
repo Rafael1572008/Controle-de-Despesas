@@ -3,7 +3,7 @@
 {% block title %}Minhas Despesas{% endblock %}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'core/css/lista_despesas.css' %}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/3.0.2/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.5/css/dataTables.dataTables.min.css">
 {% endblock %}
 {% block content %}
 <div class="page-heading">
@@ -15,31 +15,44 @@
 <section class="card" aria-labelledby="despesas-title">
     <header class="card-header">
         <div class="toolbar">
-            <div>
-                <h2 class="toolbar-title" id="despesas-title">Lançamentos</h2>
-                <p class="toolbar-subtitle">Suas despesas organizadas por categoria.</p>
+            <div class="toolbar-heading">
+                <div>
+                    <h2 class="toolbar-title" id="despesas-title">Lançamentos</h2>
+                    <p class="toolbar-subtitle">Suas despesas organizadas por categoria.</p>
+                </div>
             </div>
+            {% if despesas %}
+                <div class="date-filter-compact" aria-label="Filtro por período de data">
+                    <label class="date-compact-field" title="Data inicial">
+                        <span>De</span>
+                        <input type="date" id="date-filter-start" aria-label="Data inicial">
+                    </label>
+                    <span class="date-compact-separator" aria-hidden="true">—</span>
+                    <label class="date-compact-field" title="Data final">
+                        <span>Até</span>
+                        <input type="date" id="date-filter-end" aria-label="Data final">
+                    </label>
+                    <button type="button" class="date-compact-clear" id="clear-date-filter" aria-label="Limpar filtro de data" title="Limpar filtro de data" hidden>×</button>
+                </div>
+            {% endif %}
+            <button></button>
             <a class="button button--icon" href="{% url 'criar_despesa' %}" aria-label="Cadastrar nova despesa" title="Cadastrar nova despesa">+</a>
         </div>
     </header>
 
     {% if despesas %}
+
         <div class="datatable-shell">
-            <div class="datatable-toolbar" aria-label="Filtros da tabela">
-                <label class="sr-only" for="despesas-top-filter">Filtrar por Top</label>
-                <select class="datatable-filter" id="despesas-top-filter" data-table-filter="despesas-table" data-column="2">
-                    <option value="">Todas as Tops</option>
-                    {% for top in tops %}<option value="{{ top.nome }}">{{ top.nome }}</option>{% endfor %}
-                </select>
-            </div>
             <div class="data-table-wrap">
-                <table class="data-table js-datatable" id="despesas-table" data-date-column="1">
-                    <thead><tr><th>Despesa</th><th>Valor</th><th>Top</th><th>Ações</th></tr></thead>
+                <table class="data-table js-datatable" id="despesas-table" data-date-column="2">
+                    <thead><tr><th>Despesa</th><th>Valor</th><th>Data</th><th>Status</th><th>Top</th><th>Ações</th></tr></thead>
                     <tbody>
                         {% for despesa in despesas %}
                         <tr>
                             <td><a class="item-title" href="{% url 'detalhe_despesa' despesa.id %}">{{ despesa.nome }}</a>{% if despesa.descricao %}<span class="item-meta">{{ despesa.descricao }}</span>{% endif %}</td>
-                            <td data-order="{{ despesa.data_da_despesa|date:'Y-m-d' }}"><span class="item-title">R$ {{ despesa.valor|floatformat:2 }}</span><span class="item-meta">{{ despesa.data_da_despesa|date:"d/m/Y" }}</span></td>
+                            <td><span class="item-title">R$ {{ despesa.valor|floatformat:2 }}</span></td>
+                            <td data-order="{{ despesa.data_da_despesa|date:'Y-m-d' }}"><span class="item-title">{{ despesa.data_da_despesa|date:"d/m/Y" }}</span></td>
+                            <td>{% if despesa.eh_agendamento %}<span class="badge badge--scheduled">Agendamento</span>{% else %}<span class="badge">Baixado</span>{% endif %}</td>
                             <td><span class="badge">{{ despesa.top.nome }}</span></td>
                             <td><div class="table-actions"><a class="action-link" href="{% url 'editar_despesa' despesa.id %}">Editar</a><form action="{% url 'excluir_despesa' despesa.id %}" method="post">{% csrf_token %}<button class="action-button action-button--danger" type="submit" data-confirm="Deseja realmente excluir esta despesa?">Excluir</button></form></div></td>
                         </tr>
@@ -54,6 +67,6 @@
 </section>
 {% endblock %}
 {% block extra_scripts %}
-    <script src="https://cdn.datatables.net/3.0.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.5/js/dataTables.min.js"></script>
     <script src="{% static 'core/js/lista_despesas.js' %}"></script>
 {% endblock %}

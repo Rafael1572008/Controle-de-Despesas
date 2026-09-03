@@ -1,3 +1,115 @@
 @import url("tables.css");
 
-/* Ajustes exclusivos da listagem de despesas podem ficar aqui. */
+/* Cabeçalho compacto da listagem */
+.toolbar-heading {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    min-width: 0;
+}
+
+.date-filter-compact {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    flex-shrink: 0;
+}
+
+.date-compact-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-compact-field span {
+    position: absolute;
+    left: .65rem;
+    z-index: 1;
+    font-size: .68rem;
+    font-weight: 700;
+    color: var(--muted-color, #64748b);
+    pointer-events: none;
+}
+
+.date-compact-field input {
+    width: 142px;
+    height: 38px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color, #dbe1e8);
+    border-radius: 9px;
+    background: var(--input-background, #fff);
+    color: var(--text-color, #1e293b);
+    padding: .45rem .55rem .45rem 1.85rem;
+    font: inherit;
+    font-size: .78rem;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.date-compact-field input:focus {
+    border-color: var(--primary-color, #2563eb);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
+.date-compact-separator {
+    color: var(--muted-color, #94a3b8);
+    font-size: .8rem;
+}
+
+.date-compact-clear {
+    width: 28px;
+    height: 28px;
+    margin-left: -.15rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted-color, #64748b);
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.date-compact-clear:hover {
+    background: rgba(15, 23, 42, .07);
+    color: var(--text-color, #1e293b);
+}
+
+@media (max-width: 850px) {
+    .toolbar-heading {
+        gap: .8rem;
+    }
+
+    .toolbar-subtitle {
+        display: none;
+    }
+
+    .date-compact-field input {
+        width: 132px;
+    }
+}
+
+@media (max-width: 640px) {
+    .toolbar-heading {
+        flex: 1;
+        justify-content: space-between;
+        gap: .10rem;
+    }
+
+    .date-filter-compact {
+        gap: .25rem;
+    }
+
+    .date-compact-field input {
+        width: 112px;
+        padding-left: 1.65rem;
+        font-size: .72rem;
+    }
+
+    .date-compact-field span {
+        left: .5rem;
+    }
+
+    .date-compact-separator {
+        display: none;
+    }
+}

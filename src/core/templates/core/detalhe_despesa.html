@@ -34,6 +34,10 @@
                 <span class="detail-label">Data da despesa</span>
                 <span class="detail-value">{{ despesa.data_da_despesa|date:"d/m/Y" }}</span>
             </div>
+            <div class="detail-item">
+                <span class="detail-label">Status</span>
+                {% if despesa.eh_agendamento %}<span class="badge badge--scheduled">Agendamento</span>{% else %}<span class="badge">Baixado</span>{% endif %}
+            </div>
         </div>
         <div class="form-actions">
             <a class="button button--secondary" href="{% url 'lista_despesas' %}">Voltar</a>

@@ -1,0 +1,42 @@
+.dashboard-heading { margin-bottom: 24px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.kpi-card { padding: 21px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.kpi-label { color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.kpi-value { margin-top: 7px; color: var(--ink); font-size: clamp(22px, 3vw, 28px); font-weight: 800; letter-spacing: -.035em; }
+.kpi-note { margin-top: 5px; color: var(--muted); font-size: 12px; }
+.kpi-card--done { border-top: 3px solid var(--green-500); }
+.kpi-card--scheduled { border-top: 3px solid #9aa69f; }
+.dashboard-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 18px; margin-bottom: 18px; }
+.chart-card { min-width: 0; }
+.chart-body { min-height: 300px; padding: 22px; display: flex; align-items: center; justify-content: center; }
+.chart-body--donut { flex-direction: column; gap: 20px; }
+.donut-wrap { width: min(250px, 80%); height: 230px; }
+.donut-wrap canvas { width: 100% !important; height: 100% !important; }
+.chart-body > canvas { width: 100% !important; max-height: 300px; }
+.legend-list { width: 100%; display: grid; gap: 9px; }
+.legend-item { display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: 9px; color: var(--text); font-size: 13px; }
+.legend-item strong { color: var(--ink); }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-500); }
+.legend-dot--scheduled { background: #9aa69f; }
+.ranking-card { overflow: hidden; }
+.ranking-list { padding: 4px 22px; }
+.ranking-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 2px; border-bottom: 1px solid #edf1ee; }
+.ranking-row:last-child { border-bottom: 0; }
+.ranking-name { min-width: 180px; display: flex; align-items: center; gap: 11px; color: var(--ink); }
+.ranking-position { width: 27px; height: 27px; display: grid; place-items: center; border-radius: 8px; background: var(--surface-soft); color: var(--green-600); font-size: 12px; font-weight: 800; }
+.ranking-values { display: grid; grid-template-columns: repeat(3, minmax(95px, auto)); gap: 26px; text-align: right; }
+.ranking-values span { display: grid; gap: 2px; }
+.ranking-values small { color: var(--muted); font-size: 11px; }
+.ranking-values b { color: var(--ink); font-size: 13px; }
+.empty-chart { width: 100%; padding: 45px 20px; text-align: center; color: var(--muted); }
+@media (max-width: 780px) {
+  .kpi-grid, .dashboard-grid { grid-template-columns: 1fr; }
+  .ranking-row { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .ranking-values { width: 100%; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: left; }
+}
+@media (max-width: 520px) {
+  .kpi-grid { gap: 10px; }
+  .kpi-card { padding: 18px; }
+  .chart-body { min-height: 270px; padding: 16px; }
+  .ranking-values { grid-template-columns: 1fr; }
+}

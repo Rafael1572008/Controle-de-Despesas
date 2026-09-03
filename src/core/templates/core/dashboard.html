@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<div class="page-heading dashboard-heading">
+    <p class="eyebrow">Visão geral</p>
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">Acompanhe o que já foi baixado e o que está programado para os próximos dias.</p>
+</div>
+
+<section class="kpi-grid" aria-label="Indicadores financeiros">
+    <article class="kpi-card">
+        <div class="kpi-label">Total de despesas</div>
+        <div class="kpi-value">R$ {{ total_geral|floatformat:2 }}</div>
+        <div class="kpi-note">Todos os lançamentos cadastrados</div>
+    </article>
+    <article class="kpi-card kpi-card--done">
+        <div class="kpi-label">Baixado no caixa</div>
+        <div class="kpi-value">R$ {{ total_baixado|floatformat:2 }}</div>
+        <div class="kpi-note">Despesas com data até hoje</div>
+    </article>
+    <article class="kpi-card kpi-card--scheduled">
+        <div class="kpi-label">Agendado</div>
+        <div class="kpi-value">R$ {{ total_agendado|floatformat:2 }}</div>
+        <div class="kpi-note">Será baixado quando a data chegar</div>
+    </article>
+</section>
+
+<section class="dashboard-grid">
+    <article class="card chart-card">
+        <header class="card-header">
+            <div>
+                <h2 class="toolbar-title">Baixado x Agendado</h2>
+                <p class="toolbar-subtitle">Distribuição do valor total das despesas.</p>
+            </div>
+        </header>
+        <div class="chart-body chart-body--donut">
+            {% if total_geral %}
+                <div class="donut-wrap"><canvas id="statusChart" aria-label="Gráfico de despesas baixadas e agendadas"></canvas></div>
+                <div class="legend-list">
+                    <div class="legend-item"><span class="legend-dot legend-dot--done"></span><span>Baixado</span><strong>R$ {{ total_baixado|floatformat:2 }}</strong></div>
+                    <div class="legend-item"><span class="legend-dot legend-dot--scheduled"></span><span>Agendado</span><strong>R$ {{ total_agendado|floatformat:2 }}</strong></div>
+                </div>
+            {% else %}
+                <div class="empty-chart">Nenhuma despesa cadastrada para analisar.</div>
+            {% endif %}
+        </div>
+    </article>
+
+    <article class="card chart-card">
+        <header class="card-header">
+            <div>
+                <h2 class="toolbar-title">Despesas por Top</h2>
+                <p class="toolbar-subtitle">Ranking por valor, considerando todos os lançamentos.</p>
+            </div>
+        </header>
+        <div class="chart-body">
+            {% if top_labels %}
+                <canvas id="topChart" aria-label="Gráfico de despesas por Top"></canvas>
+            {% else %}
+                <div class="empty-chart">Cadastre despesas para visualizar o ranking.</div>
+            {% endif %}
+        </div>
+    </article>
+</section>
+
+<section class="card ranking-card">
+    <header class="card-header">
+        <div>
+            <h2 class="toolbar-title">Resumo por Top</h2>
+            <p class="toolbar-subtitle">Veja quanto já baixou e quanto ainda está agendado em cada categoria.</p>
+        </div>
+    </header>
+    {% if top_resumo %}
+    <div class="ranking-list">
+        {% for item in top_resumo %}
+        <div class="ranking-row">
+            <div class="ranking-name"><span class="ranking-position">{{ forloop.counter }}</span><strong>{{ item.nome }}</strong></div>
+            <div class="ranking-values">
+                <span><small>Total</small><b>R$ {{ item.total|floatformat:2 }}</b></span>
+                <span><small>Baixado</small><b>R$ {{ item.baixado|floatformat:2 }}</b></span>
+                <span><small>Agendado</small><b>R$ {{ item.agendado|floatformat:2 }}</b></span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-chart">Nenhuma Top possui despesas cadastradas.</div>
+    {% endif %}
+</section>
+
+{{ chart_status|json_script:'dashboard-status-data' }}
+{{ top_labels|json_script:'dashboard-top-labels' }}
+{{ top_values|json_script:'dashboard-top-values' }}
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{% static 'core/js/dashboard.js' %}"></script>
+{% endblock %}

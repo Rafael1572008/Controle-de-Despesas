@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser # Herança da tabela de user padão
 from django.db import models
+from django.utils import timezone
 
 
 class Usuario(AbstractUser):
@@ -44,6 +45,15 @@ class Despesa(models.Model):
         on_delete=models.PROTECT,
         related_name="despesas"
     )
+
+    @property
+    def eh_agendamento(self):
+        """Lançamentos futuros ficam como agendamento até a data chegar."""
+        return self.data_da_despesa > timezone.localdate()
+
+    @property
+    def situacao(self):
+        return "Agendamento" if self.eh_agendamento else "Baixado"
 
     def __str__(self):
         return self.nome

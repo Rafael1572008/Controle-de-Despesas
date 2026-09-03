@@ -1,39 +1,72 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initializeDataTables();
-});
-
-function initializeDataTables() {
     document.querySelectorAll('.js-datatable').forEach((table) => {
         const config = {
+            searching: false,
+            lengthChange: false,
+            pageLength: 5,
+            order: [],
             language: {
-                search: 'Pesquisar:',
-                lengthMenu: 'Mostrar _MENU_ registros',
                 info: 'Mostrando _START_ a _END_ de _TOTAL_ registros',
                 infoEmpty: 'Nenhum registro encontrado',
-                infoFiltered: '(filtrado de _MAX_ registros)',
                 zeroRecords: 'Nenhum registro encontrado',
                 emptyTable: 'Nenhum registro disponível',
                 paginate: { first: 'Primeiro', last: 'Último', next: 'Próximo', previous: 'Anterior' }
             },
-            pageLength: 10,
-            lengthMenu: [5, 10, 25, 50],
-            order: [],
             columnDefs: [{ targets: -1, orderable: false, searchable: false }]
         };
 
         if (table.dataset.dateColumn !== undefined) {
-            const dateColumn = Number(table.dataset.dateColumn);
-            config.columnDefs.push({ targets: dateColumn, type: 'date', render: DataTable.render.text() });
+            config.columnDefs.push({
+                targets: Number(table.dataset.dateColumn),
+                type: 'date'
+            });
         }
 
         const dataTable = new DataTable(table, config);
+        const startInput = document.getElementById('date-filter-start');
+        const endInput = document.getElementById('date-filter-end');
+        const clearButton = document.getElementById('clear-date-filter');
 
-        document.querySelectorAll('[data-table-filter]').forEach((filter) => {
-            if (filter.dataset.tableFilter !== table.id) return;
-            filter.addEventListener('change', () => {
-                const column = Number(filter.dataset.column);
-                dataTable.column(column).search(filter.value).draw();
-            });
+        if (!startInput || !endInput || !clearButton) return;
+
+        const dateColumn = Number(table.dataset.dateColumn ?? 2);
+
+        const parseDate = (value) => {
+            if (!value) return null;
+            const [day, month, year] = value.split('/').map(Number);
+            if (!day || !month || !year) return null;
+            return new Date(year, month - 1, day);
+        };
+
+        const updateClearButton = () => {
+            clearButton.hidden = !startInput.value && !endInput.value;
+        };
+
+        DataTable.ext.search.push((settings, searchData) => {
+            if (settings.nTable !== table) return true;
+
+            const start = startInput.value ? new Date(`${startInput.value}T00:00:00`) : null;
+            const end = endInput.value ? new Date(`${endInput.value}T23:59:59`) : null;
+            const rowDate = parseDate(searchData[dateColumn]);
+
+            if (!rowDate) return false;
+            if (start && rowDate < start) return false;
+            if (end && rowDate > end) return false;
+            return true;
+        });
+
+        const applyFilter = () => {
+            dataTable.draw();
+            updateClearButton();
+        };
+
+        startInput.addEventListener('change', applyFilter);
+        endInput.addEventListener('change', applyFilter);
+
+        clearButton.addEventListener('click', () => {
+            startInput.value = '';
+            endInput.value = '';
+            applyFilter();
         });
     });
-}
+});
