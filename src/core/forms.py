@@ -5,7 +5,7 @@ from .models import Despesa, Top, Usuario
 class DespesaForm(forms.ModelForm):
 
     class Meta:
-        model = Despesa
+        model = Despesa 
         fields = [
             'nome',
             'descricao',

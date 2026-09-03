@@ -1,0 +1,8 @@
+.form-page { width: min(680px, 100%); margin: 0 auto; }
+.app-form p { display: grid; gap: 7px; margin: 0 0 18px; }
+.app-form label { font-weight: 650; }
+.app-form input, .app-form select, .app-form textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--text); font: inherit; }
+.app-form textarea { min-height: 110px; resize: vertical; }
+.app-form input:focus, .app-form select:focus, .app-form textarea:focus { outline: 2px solid rgba(22, 128, 91, .18); border-color: var(--primary); }
+.form-actions { display: flex; gap: 10px; margin-top: 24px; }
+.errorlist { margin: 0; padding: 0; list-style: none; color: var(--danger); font-size: .9rem; }

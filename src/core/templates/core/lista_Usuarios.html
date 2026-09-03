@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Usuários{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'core/css/lista_usuarios.css' %}">{% endblock %}
+
+{% block content %}
+<section class="page-card usuarios-page">
+    <h1>Usuários</h1>
+    <div class="usuarios-list">
+        {% for usuario in Usuarios %}
+            <article class="usuario-item">
+                <strong>{{ usuario.nome }}</strong>
+                <span>{{ usuario.username }}</span>
+            </article>
+        {% empty %}
+            <div class="empty-state">Nenhum usuário cadastrado.</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

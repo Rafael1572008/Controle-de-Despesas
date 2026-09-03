@@ -1,0 +1,7 @@
+/* Estilos específicos do detalhe da despesa */
+.detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+.detail-item { padding: 17px 18px; background: white; }
+.detail-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.detail-value { color: var(--ink); font-weight: 650; }
+.detail-description { white-space: pre-wrap; line-height: 1.65; font-weight: 450; }
+@media (max-width: 760px) { .detail-grid { grid-template-columns: 1fr; } }

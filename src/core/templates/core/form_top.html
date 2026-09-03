@@ -1,5 +1,9 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ form.instance.pk|yesno:"Editar Top,Nova Top" }}{% endblock %}
+{% load static %}
+{% block title %}Top{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/form_top.css' %}">
+{% endblock %}
 {% block content %}
 <div class="page-heading">
     <p class="eyebrow">Categorias</p>
@@ -36,4 +40,7 @@
         </form>
     </div>
 </section>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'core/js/form_top.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,9 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %}Entrar{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/auth.css' %}">
+{% endblock %}
 {% block content %}
 <div class="auth-wrap">
     <section class="card auth-card">
@@ -27,4 +31,7 @@
         <p class="auth-note">Ainda não possui uma conta? <a href="{% url 'cadastrar_usuario' %}">Cadastre-se</a></p>
     </section>
 </div>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'core/js/login.js' %}"></script>
 {% endblock %}

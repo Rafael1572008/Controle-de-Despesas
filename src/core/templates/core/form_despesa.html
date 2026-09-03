@@ -1,5 +1,9 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ form.instance.pk|yesno:"Editar despesa,Nova despesa" }}{% endblock %}
+{% load static %}
+{% block title %}Despesa{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/form_despesa.css' %}">
+{% endblock %}
 {% block content %}
 <div class="page-heading">
     <p class="eyebrow">Financeiro</p>
@@ -29,4 +33,7 @@
         </form>
     </div>
 </section>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'core/js/form_despesa.js' %}"></script>
 {% endblock %}

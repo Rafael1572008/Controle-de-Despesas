@@ -1,5 +1,9 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ despesa.nome }}{% endblock %}
+{% load static %}
+{% block title %}Detalhe da despesa{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/detalhe_despesa.css' %}">
+{% endblock %}
 {% block content %}
 <div class="page-heading">
     <p class="eyebrow">Despesa</p>
@@ -37,4 +41,7 @@
         </div>
     </div>
 </section>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'core/js/detalhe_despesa.js' %}"></script>
 {% endblock %}

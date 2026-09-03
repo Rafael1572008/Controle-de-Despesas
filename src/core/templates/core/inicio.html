@@ -1,5 +1,9 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %}Início{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/inicio.css' %}">
+{% endblock %}
 {% block content %}
 <section class="hero-card card">
     <div class="hero-mark">✓</div>
@@ -16,4 +20,7 @@
         {% endif %}
     </div>
 </section>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'core/js/inicio.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,10 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block title %}Minhas Tops{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'core/css/lista_tops.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/3.0.2/css/dataTables.dataTables.min.css">
+{% endblock %}
 {% block content %}
 <div class="page-heading">
     <p class="eyebrow">Categorias</p>
@@ -8,66 +13,26 @@
 </div>
 
 <section class="card" aria-labelledby="tops-title">
-    <header class="card-header">
-        <div class="toolbar">
-            <div>
-                <h2 class="toolbar-title" id="tops-title">Tabelas de Tops</h2>
-                <p class="toolbar-subtitle">Categorias disponíveis para seus lançamentos.</p>
-            </div>
-            <a class="button button--icon" href="{% url 'criar_top' %}" aria-label="Cadastrar nova Top" title="Cadastrar nova Top">+</a>
-        </div>
-    </header>
-
+    <header class="card-header"><div class="toolbar"><div><h2 class="toolbar-title" id="tops-title">Tabelas de Tops</h2><p class="toolbar-subtitle">Categorias disponíveis para seus lançamentos.</p></div><a class="button button--icon" href="{% url 'criar_top' %}" aria-label="Cadastrar nova Top" title="Cadastrar nova Top">+</a></div></header>
     {% if tops %}
         <div class="datatable-shell">
             <div class="datatable-toolbar" aria-label="Filtros da tabela">
                 <label class="sr-only" for="tops-type-filter">Filtrar por tipo</label>
-                <select class="datatable-filter" id="tops-type-filter" data-table-filter="tops-table" data-column="1">
-                    <option value="">Todos os tipos</option>
-                    <option value="Débito">Débito</option>
-                    <option value="Não é débito">Não é débito</option>
-                </select>
+                <select class="datatable-filter" id="tops-type-filter" data-table-filter="tops-table" data-column="1"><option value="">Todos os tipos</option><option value="Débito">Débito</option><option value="Não é débito">Não é débito</option></select>
             </div>
             <div class="data-table-wrap">
-            <table class="data-table js-datatable" id="tops-table">
-                <thead>
-                    <tr>
-                        <th>Top</th>
-                        <th>Tipo</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for top in tops %}
-                    <tr>
-                        <td>
-                            <span class="item-title">{{ top.nome }}</span>
-                            {% if top.descricao %}<span class="item-meta">{{ top.descricao }}</span>{% endif %}
-                        </td>
-                        <td>
-                            {% if top.eh_debito %}<span class="badge">Débito</span>{% else %}<span class="badge badge--neutral">Não é débito</span>{% endif %}
-                        </td>
-                        <td>
-                            <div class="table-actions">
-                                <a class="action-link" href="{% url 'editar_top' top.id %}">Editar</a>
-                                <form action="{% url 'excluir_top' top.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button class="action-button action-button--danger" type="submit" onclick="return confirm('Deseja realmente excluir esta Top?')">Excluir</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <table class="data-table js-datatable" id="tops-table">
+                    <thead><tr><th>Top</th><th>Tipo</th><th>Ações</th></tr></thead>
+                    <tbody>
+                        {% for top in tops %}<tr><td><span class="item-title">{{ top.nome }}</span>{% if top.descricao %}<span class="item-meta">{{ top.descricao }}</span>{% endif %}</td><td>{% if top.eh_debito %}<span class="badge">Débito</span>{% else %}<span class="badge badge--neutral">Não é débito</span>{% endif %}</td><td><div class="table-actions"><a class="action-link" href="{% url 'editar_top' top.id %}">Editar</a><form action="{% url 'excluir_top' top.id %}" method="post">{% csrf_token %}<button class="action-button action-button--danger" type="submit" data-confirm="Deseja realmente excluir esta Top?">Excluir</button></form></div></td></tr>{% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">+</div>
-            <p class="empty-title">Nenhuma Top cadastrada</p>
-            <p class="empty-text">Clique no botão + para criar sua primeira Top.</p>
-        </div>
-    {% endif %}
+    {% else %}<div class="empty-state"><div class="empty-icon">+</div><p class="empty-title">Nenhuma Top cadastrada</p><p class="empty-text">Clique no botão + para criar sua primeira Top.</p></div>{% endif %}
 </section>
+{% endblock %}
+{% block extra_scripts %}
+    <script src="https://cdn.datatables.net/3.0.2/js/dataTables.min.js"></script>
+    <script src="{% static 'core/js/lista_tops.js' %}"></script>
 {% endblock %}

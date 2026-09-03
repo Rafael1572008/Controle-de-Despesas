@@ -1,0 +1,10 @@
+/* Estilos compartilhados pelas páginas de autenticação */
+.auth-wrap { width: min(440px, 100%); margin: 25px auto 0; }
+.auth-card { padding: 30px; }
+.auth-card .form-grid { grid-template-columns: 1fr; }
+.auth-card .field--full { grid-column: auto; }
+.auth-card .form-actions { justify-content: stretch; }
+.auth-card .form-actions .button { flex: 1; }
+.auth-note { margin: 18px 0 0; color: var(--muted); text-align: center; font-size: 13px; }
+.auth-note a { font-weight: 700; text-decoration: none; }
+@media (max-width: 760px) { .auth-card { padding: 22px; } }
